@@ -1,0 +1,77 @@
+binutils-mc9s12x (1:2.23-2013-01-09-0+0) unstable; urgency=low
+  [ David Andruczyk ]
+  * packaged latest work from seank and gnu binutils trunk
+
+ -- David Andruczyk <dandruczyk@gmail.com>  fri, 11 Jan 2013 13:05:00 -0500
+
+binutils-mc9s12x (1:2.22-0+2) unstable; urgency=low
+
+  [ David Andruczyk ]
+  * Adjust conflicts/replaces
+
+ -- David Andruczyk <dandruczyk@gmail.com>  sun, 13 May 2012 08:37:00 -0500
+
+binutils-mc9s12x (1:2.22-0+1) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Merge from upstream
+
+ -- Sean Keys <skeys@ipdatasys.com>  Fri, 11 May 2012 12:03:00 -0500
+
+binutils-mc9s12x (1:2.20-0+8) unstable; urgency=low
+
+  [ Sean Keys ]
+  * New binutils code forcing upgrade
+
+ -- Sean Keys <skeys@ipdatasys.com>  Thu, 29 Dec 2011 12:14:00 -0500
+
+binutils-mc9s12x (1:2.20-0+7) unstable; urgency=low
+
+  [ David Andruczyk ]
+  * Consistent rebuild to make fredcooke happy
+
+ -- David Andruczyk <dandruczyk@gmail.com>  Thu, 05 May 2011 12:14:00 -0500
+
+binutils-mc9s12x (1:2.20-0+6) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Updated xgate GAS
+
+ -- Sean Keys <support@computer-ss.com>  Thu, 10 Mar 2011 12:14:00 -0700
+
+binutils-mc9s12x (1:2.20-0+5) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Changed Deps
+
+ -- Sean Keys <support@computer-ss.com>  Wed, 20 Oct 2010 12:14:00 -0700 
+
+binutils-mc9s12x (1:2.20-0+4) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Changed Deps
+
+ -- Sean Keys <support@computer-ss.com>  Wed, 20 Oct 2010 10:14:00 -0700 
+
+binutils-mc9s12x (1:2.20-0+3) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Changed Deps
+
+ -- Sean Keys <support@computer-ss.com>  Wed, 20 Oct 2010 10:13:00 -0700
+
+binutils-mc9s12x (1:2.20-0+1) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Fix Versioning so old tools will be replaced
+
+ -- Sean Keys <support@computer-ss.com>  Wed, 20 Oct 2010 10:12:00 -0700 
+
+binutils-mc9s12x (1:2.20-0) unstable; urgency=low
+
+  [ Sean Keys ]
+  * Initial clone of m68hc1x rules/control files
+
+ -- Sean Keys <support@computer-ss.com>  Wed, 20 Oct 2010 10:11:00 -0700
+
+

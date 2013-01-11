@@ -1,0 +1,37 @@
+.TH m68hc12-gccbug 1 "07 February 2003" 
+.SH "NAME"
+m68hc12-gccbug \- Report a bug to the GCC developers
+.SH "SYNOPSIS"
+.B m68hc12-gccbug
+.SH "DESCRIPTION"
+.B m68hc12-gccbug
+is a tool for reporting bugs to the GCC maintainers.
+It automatically starts an editor where the user can enter details
+of the bug. On completion, the bug is sent to the appropriate
+address.
+The User should replace the comments (text surrounded by
+<angle quotes>, and fill in the Subject: and From: lines with
+a summary and e-mail address.
+
+If the user believes the bug is related to Debian rather than to the
+m68hc1x-gcc package, then the
+.B reportbug
+command should be used instead.
+.SH "ENVIRONMENT"
+.B m68hc12-gccbug
+will utilize the following enviromntal variables if they exist:
+.TP
+.B EDITOR
+and
+.B VISUAL 
+Specifies the preferred editor. If
+neither are set, 
+.B m68hc12-gccbug
+will default to 
+.B /usr/bin/sensible-editor
+to determine a working editor.
+.TP
+.B HOME
+Directory in which the failed bug report is saved if the mail fails.
+.SH "SEE ALSO"
+reportbug(1)

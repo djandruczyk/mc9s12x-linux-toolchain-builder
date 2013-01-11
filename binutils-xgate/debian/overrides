@@ -1,0 +1,31 @@
+# Directory usr/xgate is considered as non standard by lintian, however it
+# is a standard dir for cross-compilers
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/ar
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/as
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/ld
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/nm
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/objcopy
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/objdump
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/ranlib
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/strip
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelfb.x
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelfb.xbn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelfb.xn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelfb.xr
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelfb.xu
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.x
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xbn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xr
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xu
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.x
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.xbn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.xn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.xr
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.xu
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.x
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xbn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xr
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xu
+binutils-xgate: non-standard-dir-in-usr usr/xgate/
