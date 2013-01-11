@@ -1,4 +1,4 @@
-binutils-mc9s12x (1:2.23-2013-01-09-0+0) unstable; urgency=low
+binutils-xgate (1:2.23-2013-01-09-0+0) unstable; urgency=low
   [ David Andruczyk ]
   * packaged latest work from seank and gnu binutils trunk
 
