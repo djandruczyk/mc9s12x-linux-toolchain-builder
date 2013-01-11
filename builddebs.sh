@@ -17,7 +17,8 @@ CPUS=5
 #BINUTILSPKGS="binutils-xgate"
 if test `uname -m` = "x86_64" ; then
 	echo "Detected 64 bit machine, building for 32 and 64 bit"
-	ARCHS="i386 amd64"
+	#ARCHS="i386 amd64"
+	ARCHS="amd64"
 else
 	echo "Detected 32 bit machine, building for 32 bit only"
 	ARCHS="i386"
@@ -40,7 +41,8 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		fi
 		find ${OTHERMIRROR}  -type f -exec rm -f {} \;
 		find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
-		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" --debbuildopts -j4 -- --allow-untrusted
+		#pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" --debbuildopts -j4 -- --allow-untrusted
+		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
 		if [ $? -ne 0 ] ; then
 			echo "Build failure for Arch $arch Dist $dist"
 			exit -1
@@ -59,12 +61,14 @@ mkdir -p "${BUILDDIR}"
 function build_binutils {
 if [ ! -f "${WORKDIR}"/binutils-trunk ] ; then
 	git clone "${BINUTILS_GIT}" binutils-trunk
-	tar cvz --exclude=.git* -f "${WORKDIR}"/"${BINUTILS_TAR}" binutils-trunk
+	echo "Tarring up bintutils"
+	tar cz --exclude=.git* -f "${WORKDIR}"/"${BINUTILS_TAR}" binutils-trunk
 else
 	pushd binutils-trunk >/dev/null
 	git pull
 	popd >/dev/null
-	tar cvz --exclude=.git* -f "${WORKDIR}"/"${BINUTILS_TAR}" binutils-trunk
+	echo "Tarring up bintutils"
+	tar cz --exclude=.git* -f "${WORKDIR}"/"${BINUTILS_TAR}" binutils-trunk
 fi
 
 for pkg in `echo "${BINUTILSPKGS}"` ; do

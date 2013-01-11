@@ -21,10 +21,8 @@ D := $(CURDIR)/debian/binutils-mc9s12x
 unpack: unpack-stamp
 unpack-stamp:
 	dh_testdir
-
-	tar xf $(tarball)
 	mkdir build
-
+	tar xf $(tarball)
 	touch unpack-stamp
 
 patch: patch-stamp
@@ -34,7 +32,6 @@ patch-stamp:
 #	for patch in debian/patches/*.patch; do \
 #	  patch -p0 < $$patch; \
 #	done
-
 	touch patch-stamp
 
 configure: configure-stamp
@@ -42,7 +39,7 @@ configure-stamp: unpack-stamp
 	dh_testdir
 
 	cd build && \
-	$(srcdir)/configure --prefix=/usr \
+	../$(srcdir)/configure --prefix=/usr \
 			--infodir=/usr/share/info \
 			--mandir=/usr/share/man \
 			--build=$(DEB_BUILD_GNU_TYPE) \
@@ -55,7 +52,7 @@ configure-stamp: unpack-stamp
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	cd build && $(MAKE)
+	cd build && $(MAKE) -j` cat /proc/cpuinfo  |grep -c processor` && make check-gas
 	tar cfz $(CURDIR)/example.tar.gz example
 	touch build-stamp
 

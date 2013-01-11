@@ -43,7 +43,7 @@ configure-stamp: unpack-stamp
 	dh_testdir
 
 	cd build && \
-	$(srcdir)/configure --prefix=/usr \
+	../$(srcdir)/configure --prefix=/usr \
 			--infodir=/usr/share/info \
 			--mandir=/usr/share/man \
 			--build=$(DEB_BUILD_GNU_TYPE) \
@@ -57,7 +57,8 @@ configure-stamp: unpack-stamp
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	cd build && $(MAKE)
+	cd build && $(MAKE) -j` cat /proc/cpuinfo  |grep -c processor` && make check-gas   
+	 
 	tar cfz $(CURDIR)/example.tar.gz example
 	touch build-stamp
 
