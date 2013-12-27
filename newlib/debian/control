@@ -1,8 +1,8 @@
 Source: newlib
 Section: devel
 Priority: extra
-Maintainer: Sean Keys <support@computer-ss.com>
-Uploaders: Sean Keys <support@computer-ss.com>
+Maintainer: LibreEMS Build Team <builder@libreems.org>
+Uploaders: LibreEMS Build Team <builder@libreems.org>
 Build-Depends: debhelper (>= 6), quilt (>= 0.40), texinfo, binutils-spu [powerpc ppc64], gcc-spu [powerpc ppc64], lzma, dpkg-dev, linux-libc-dev
 Build-Depends-Indep: gcc-mc9s12x
 Standards-Version: 3.9.1

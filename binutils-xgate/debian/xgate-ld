@@ -1,7 +1,0 @@
-#!/bin/sh
-
-if [ -n "$LD_EMULATION" ] ; then
-	/usr/bin/xgate-elf-ld "$@"
-else
-	/usr/bin/xgate-elf-ld  "$@"
-fi

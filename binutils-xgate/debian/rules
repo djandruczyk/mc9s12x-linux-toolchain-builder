@@ -11,12 +11,12 @@ DEB_BUILD_GNU_TYPE      := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_HOST_GNU_TYPE       := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 
 version := $(shell dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.]+)-.*/\1/')
-tarball := binutils-trunk.tar.bz2
+tarball := binutils-$(version).tar.bz2
 
 srcdir  := $(shell echo $(tarball) | sed -e 's/\.tar\.bz2//')
 
 # FIXME: one-char vars are evil, even more than emacs.
-D := $(CURDIR)/debian/binutils-xgate
+DEST := $(CURDIR)/debian/binutils-xgate
 
 unpack: unpack-stamp
 unpack-stamp:
@@ -78,42 +78,30 @@ install: build
 
 	# Add here commands to install the package into debian/binutils-m68hc1x
 	cd build && \
-		$(MAKE) install prefix=$(D)/usr \
-		                mandir=$(D)/usr/share/man \
-				infodir=$(D)/usr/share/info
+		$(MAKE) install prefix=$(DEST)/usr \
+		                mandir=$(DEST)/usr/share/man \
+				infodir=$(DEST)/usr/share/info
 
-	# Keep old gcc port happy by adding m68hc11 links 
-#	mkdir $(D)/usr/mc9xgate
-#	mkdir $(D)/usr/mc9xgate/bin	
 	# Change hardlinks to symlinks
 	for i in ar as ld nm objcopy objdump ranlib strip ; do \
 		rm -f $(CURDIR)/debian/binutils-xgate/usr/xgate/bin/$$i ; \
-		ln -s ../../bin/xgate-$$i $(D)/usr/xgate/bin/$$i ; \
-#		ln -s ../../bin/mc9s12x-$$i $(D)/usr/m68hc11/bin/$$i ; \
+		ln -s ../../bin/xgate-$$i $(DEST)/usr/xgate/bin/$$i ; \
 	done
 
-	# Also create mc9s12x-*
-#	install -o root -g root -m 755 $(CURDIR)/debian/mc9xgate-as $(D)/usr/bin
-#	ln -s mc9xgate-as.1 $(CURDIR)/debian/binutils-mc9xgate/usr/share/man/man1/mc9xgate-as.1
-#	install -o root -g root -m 755 $(CURDIR)/debian/mc9xgate-ld $(D)/usr/bin
-#	ln -s mc9xgate-ld.1 $(CURDIR)/debian/binutils-mc9xgate/usr/share/man/man1/mc9xgate-ld.1
-
-#	for i in ar addr2line c++filt gasp nm objdump objcopy ranlib readelf size strings strip ; do \
-#		ln -s mc9xgate-$$i $(D)/usr/bin/mc9xgate-$$i ; \
-#		ln -s mc9s12x-$$i $(D)/usr/bin/m68hc11-$$i ; \
-#		ln -s mc9xgate-$$i.1 $(D)/usr/share/man/man1/mc9xgate-$$i.1 ; \
-#	done
-
+	# Create legacy symlinks
+	for i in ar as c++filt elfedit gprof ld ld.bfd nm objcopy objdump ranlib readelf size strings strip ; do \
+		ln -s xgate-$$i $(DEST)/usr/bin/mc9xgate-$$i ; \
+	done
+			
 	# Files also in main binutils pkg
-	rm -rf $(D)/usr/include
-	rm -rf $(D)/usr/lib
-	rm -rf $(D)/usr/share/info
-	rm -rf $(D)/usr/share/locale
+	rm -rf $(DEST)/usr/include
+	rm -rf $(DEST)/usr/lib
+	rm -rf $(DEST)/usr/share/info
+	rm -rf $(DEST)/usr/share/locale
 
 	# Override file
 	install -p -o root -g root -m 644 $(CURDIR)/debian/overrides \
-		$(D)/usr/share/lintian/overrides/binutils-xgate
-
+		$(DEST)/usr/share/lintian/overrides/binutils-xgate
 
 # Build architecture-independent files here.
 binary-indep: build install

@@ -3,5 +3,5 @@
 if [ -n "$LD_EMULATION" ] ; then
 	/usr/bin/mc9s12x-ld "$@"
 else
-	/usr/bin/mc9s12x-ld -mm68hc12elf "$@"
+	/usr/bin/mc9s12x-ld -mm68hc11elf "$@"
 fi

@@ -1,20 +1,23 @@
 #!/bin/bash
 
-
 #
 #  Makes Debs for recent ubuntu and debian
 #
 
 WORKDIR=`pwd`
-BINUTILS_GIT="git://github.com/seank/FreeScale-s12x-binutils.git"
-BINUTILS_TAR=binutils-trunk.tar.bz2
+TMPDIR="${WORKDIR}/tmp"
+BINUTILS_GIT="git@git.libreems.org:libreems-suite/s12x-binutils.git"
+GCC_GIT="git@git.libreems.org:libreems-suite/s12x-gcc.git"
+GCC_BRANCH="tmp-for-dave"
+NEWLIB_GIT="git@git.libreems.org:libreems-suite/s12x-newlib.git"
+BINUTILS_URI="http://ftp.gnu.org/gnu/binutils/"
+BINUTILS_TAR=binutils-2.24.tar.bz2
 OUTDIR="${WORKDIR}"/Output
 OTHERMIRROR=/var/cache/pbuilder/repo
 BUILDDIR="${WORKDIR}"/build
 NEWLIBDIR=newlib-1.18.0
-BINUTILSPKGS="binutils-s12x binutils-xgate"
+BINUTILS_PKGS="s12x-binutils s12x-xgate"
 CPUS=5
-#BINUTILSPKGS="binutils-xgate"
 if test `uname -m` = "x86_64" ; then
 	echo "Detected 64 bit machine, building for 32 and 64 bit"
 	ARCHS="i386 amd64"
@@ -23,7 +26,8 @@ else
 	ARCHS="i386"
 fi
 
-DEB_RELEASES="lucid natty oneiric precise quantal stable unstable testing"
+#DEB_RELEASES="lucid natty oneiric precise quantal stable unstable testing"
+DEB_RELEASES="precise"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
 # previously and has the rootimages setup for the distros specified
@@ -57,22 +61,14 @@ mkdir -p "${BUILDDIR}"
 # Need to make multiple versions of binutils, 
 # one for S12x, and one for Xgate
 function build_binutils {
-if [ ! -f "${WORKDIR}"/binutils-trunk ] ; then
-	git clone "${BINUTILS_GIT}" binutils-trunk
-	echo "Tarring up bintutils"
-	tar cz --exclude=.git* -f "${WORKDIR}"/"${BINUTILS_TAR}" binutils-trunk
-else
-	pushd binutils-trunk >/dev/null
-	git pull
-	popd >/dev/null
-	echo "Tarring up bintutils"
-	tar cz --exclude=.git* -f "${WORKDIR}"/"${BINUTILS_TAR}" binutils-trunk
+if [ ! -f ${TMPDIR}/${BINUTILS_TAR} ] ; then
+	wget ${BINUTILS_URI}/${BINUTILS_TAR} -O ${TMPDIR}/${BINUTILS_TAR}
 fi
 
-for pkg in `echo "${BINUTILSPKGS}"` ; do
+for pkg in `echo "${BINUTILS_PKGS}"` ; do
 	mkdir -p "${BUILDDIR}"/"${pkg}"
 	cp -a "${pkg}"/* "${BUILDDIR}"/"${pkg}"
-	cp -a "${WORKDIR}"/"${BINUTILS_TAR}" "${BUILDDIR}"/"${pkg}"
+	cp -a "${TMPDIR}"/"${BINUTILS_TAR}" "${BUILDDIR}"/"${pkg}"
 	pushd "${BUILDDIR}"/"${pkg}" >/dev/null
 	build_debs 
 	popd >/dev/null
@@ -82,12 +78,12 @@ return $?
 
 # Need to make GCC next
 function build_gcc {
-mkdir -p "${BUILDIR}"
+mkdir -p "${BUILDDIR}"
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d FreeScale-s12x-gcc ] ; then
-	git clone git://github.com/seank/FreeScale-s12x-gcc.git
+if [ ! -d s12x-gcc ] ; then
+	git clone  -b "${GCC_BRANCH}" "${GCC_GIT}"
 fi
-pushd FreeScale-s12x-gcc >/dev/null
+pushd s12x-gcc >/dev/null
 git pull
 pushd "${WORKDIR}"/gcc/ >/dev/null
 VER=`dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/'`
@@ -112,12 +108,12 @@ return $?
 
 # Need to make Newlib
 function build_newlib {
-mkdir -p "${BUILDIR}"
+mkdir -p "${BUILDDIR}"
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d FreeScale-s12x-newlib ] ; then
-	git clone git://github.com/seank/FreeScale-s12x-newlib.git
+if [ ! -d s12x-newlib ] ; then
+	git clone "${NEWLIB_GIT}"
 fi
-pushd FreeScale-s12x-newlib >/dev/null
+pushd s12x-newlib >/dev/null
 git pull
 pushd src >/dev/null
 cp -a "${WORKDIR}"/newlib/* ./
@@ -135,7 +131,7 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 done
 }
 
-function clean {
+function build_clean {
 rm  -f "${WORKDIR}"/"${BINUTILS_TAR}"
 rm -rf "${BUILDDIR}"
 rm -rf "${OUTDIR}"
@@ -143,15 +139,15 @@ rm -rf "${OUTDIR}"
 
 function help {
 echo "Run builddebs.sh all to rebuild everything"
-echo "Run builddebs.sh build_binutils to just rebuild binutils"
-echo "Run builddebs.sh build_gcc to just rebuild gcc"
-echo "Run builddebs.sh build_newlib to just rebuild newlib"
-echo "Run builddebs.sh build_metapkg to just rebuild newlib"
+echo "Run builddebs.sh binutils to just rebuild binutils"
+echo "Run builddebs.sh gcc to just rebuild gcc"
+echo "Run builddebs.sh newlib to just rebuild newlib"
+echo "Run builddebs.sh metapkg to just rebuild the metapkg"
 echo "Run builddebs.sh clean to cleanout build and output dirs"
 echo ""
 }
 
-function all {
+function build_all {
 	echo "Rebuilding all (binutils, gcc, newlib)"
 	setup
 	build_binutils
@@ -165,7 +161,7 @@ if [ $# -eq 0 ] ; then
 fi
 
 if [ $# -eq 1 ] ; then
-	echo "Attempting to run $1"
-	$1
+	#echo "Attempting to run function build_$1"
+	build_"${1}"
 fi
 

@@ -1,2 +1,2 @@
 #!/bin/sh
-/usr/bin/m68hc11-gcc -m68hc12 "$@"
+/usr/bin/mc9s12x-gcc -m68hc12 "$@"

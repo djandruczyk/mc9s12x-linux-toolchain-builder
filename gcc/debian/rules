@@ -25,7 +25,7 @@ configure-stamp: unpack-stamp
 	dh_testdir
 	cd $(CURDIR)/build && \
 	MAKEINFO="" ../configure \
-						 --program-prefix=m68hc11- \
+						 --program-prefix=mc9s12x- \
                          --enable-languages=c \
                          --target=m68hc11 \
                          --with-gnu-as \
@@ -59,21 +59,29 @@ install: build
       infodir=$(CURDIR)/debian/gcc-mc9s12x/usr/share/info \
       mandir=$(CURDIR)/debian/gcc-mc9s12x/usr/share/man
 
-  	# Rename manpages and create symlinks
-	#mv $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/cpp.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/m68hc11-cpp.1
-	#mv $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/gcov.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/m68hc11-gcov.1
-
-	# Also create m68hc12-*
-	#install -o root -g root -m 755 debian/m68hc12-gcc $(CURDIR)/debian/gcc-mc9s12x/usr/bin
+	# Rename man pages to prevent conflict with stock GCC
+	mv $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/cpp.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/mc9s12x-cpp.1
+	mv $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/gcov.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/mc9s12x-gcov.1
+	
+	# Reanem binaries to suite naming
+	mv $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc11-gcc $(CURDIR)/debian/gcc-mc9s12x/usr/bin/mc9s12x-gcc
+	mv $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc11-cpp $(CURDIR)/debian/gcc-mc9s12x/usr/bin/mc9s12x-cpp
+	rm $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc11-gcc-3.3.6-9s12x-20120502
+	ln -s mc9s12x-gcc $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc11-gcc-3.3.6-9s12x-20120502
+	# Also create m68hc12- and m68hc11 links/helpers
+	install -o root -g root -m 755 debian/m68hc11-gcc $(CURDIR)/debian/gcc-mc9s12x/usr/bin
+	install -o root -g root -m 755 debian/m68hc12-gcc $(CURDIR)/debian/gcc-mc9s12x/usr/bin
 	#ln -s m68hc11-gcc.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/m68hc12-gcc.1
 
-	#for i in gccbug gcov cpp ; do \
-	#  ln -s m68hc11-$$i $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc12-$$i ; \
-	#  ln -s m68hc11-$$i.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/m68hc12-$$i.1 ; \
-	#done
+	for i in gccbug gcov cpp ; do \
+	  ln -s mc9s12x-$$i $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc11-$$i ; \
+	  ln -s mc9s12x-$$i $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc12-$$i ; \
+	  ln -s mc9s12x-$$i.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/m68hc11-$$i.1 ; \
+	  ln -s mc9s12x-$$i.1 $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man1/m68hc12-$$i.1 ; \
+	done
 	# Remove non-needed files
-	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/bin/m68hc11-gcc-*
-	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/share/locale
+	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/bin/mc9s12x-gcc-*
+#	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/share/locale
 	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/share/info
 	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man7
 	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/include
