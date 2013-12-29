@@ -9,7 +9,9 @@ TMPDIR="${WORKDIR}/tmp"
 BINUTILS_GIT="git@git.libreems.org:libreems-suite/s12x-binutils.git"
 GCC_GIT="git@git.libreems.org:libreems-suite/s12x-gcc.git"
 GCC_BRANCH="tmp-for-dave"
+GCC_DIR="gcc-mc9s12x"
 NEWLIB_GIT="git@git.libreems.org:libreems-suite/s12x-newlib.git"
+NEWLIB_DIR="newlib-mc9s12x"
 BINUTILS_URI="http://ftp.gnu.org/gnu/binutils/"
 BINUTILS_TAR=binutils-2.24.tar.bz2
 OUTDIR="${WORKDIR}"/Output
@@ -17,7 +19,7 @@ OTHERMIRROR=/var/cache/pbuilder/repo
 BUILDDIR="${WORKDIR}"/build
 NEWLIBDIR=newlib-1.18.0
 BINUTILS_PKGS="binutils-mc9s12x binutils-xgate"
-CPUS=5
+CPUS=`cat /proc/cpuinfo |grep -c ^processor:`
 if test `uname -m` = "x86_64" ; then
 	echo "Detected 64 bit machine, building for 32 and 64 bit"
 	ARCHS="amd64 i386"
@@ -27,14 +29,11 @@ else
 fi
 
 DEB_RELEASES="precise quantal raring saucy stable unstable testing"
-#DEB_RELEASES="quantal raring saucy stable unstable testing"
-#DEB_RELEASES="precise"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
 # previously and has the rootimages setup for the distros specified
 #
 function build_debs {
-#DEB_RELEASES="lucid"
 for dist in `echo "${DEB_RELEASES}"` ; do
 	for arch in `echo ${ARCHS}` ; do
 		echo "Building for Distro $dist Arch $arch"
@@ -46,7 +45,7 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
 		#pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" --debbuildopts -j4 -- --allow-untrusted
 		# Set the distro in the changelog properly...
-		perl -pi -e "s/\ [a-zA-Z_]+;/\ precise;/g if 1 .. 1" debian/changelog
+		perl -pi -e "s/\ [a-zA-Z_]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
 		# Set the distro in the changelog back to "unstable"
 		perl -pi -e "s/\ [a-zA-Z_]+;/\ unstable;/g if 1 .. 1" debian/changelog
@@ -93,25 +92,25 @@ return $?
 function build_gcc {
 mkdir -p "${BUILDDIR}"
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d gcc-mc9s12x ] ; then
-	git clone  -b "${GCC_BRANCH}" "${GCC_GIT}"
+if [ ! -d "${GCC_DIR}" ] ; then
+	git clone  -b "${GCC_BRANCH}" "${GCC_GIT}" "${GCC_DIR}"
 fi
-pushd gcc-mc9s12x >/dev/null
+pushd "${GCC_DIR}" >/dev/null
 git pull
-pushd "${WORKDIR}"/gcc-mc9s12x/ >/dev/null
+pushd "${WORKDIR}"/"${GCC_DIR}" >/dev/null
 VER=`dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/'`
 popd >/dev/null
 if [ -d src ] ; then
 	pushd src >/dev/null
-	cp -a "${WORKDIR}"/gcc-mc9s12x/* ./
+	cp -a "${WORKDIR}"/"${GCC_DIR}"/* ./
 	popd >/dev/null
-	mv src gcc-mc9s12x_${VER}
+	mv src "${GCC_DIR}"_${VER}
 else
-	pushd gcc-mc9s12x_${VER} >/dev/null
-	cp -a "${WORKDIR}"/gcc-mc9s12x/* ./
+	pushd "${GCC_DIR}"_${VER} >/dev/null
+	cp -a "${WORKDIR}"/"${GCC_DIR}"/* ./
 	popd >/dev/null
 fi
-pushd gcc-mc9s12x_${VER}
+pushd "${GCC_DIR}"_${VER}
 build_debs
 popd >/dev/null
 popd >/dev/null
@@ -123,13 +122,13 @@ return $?
 function build_newlib {
 mkdir -p "${BUILDDIR}"
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d newlib-mc9s12x ] ; then
-	git clone "${NEWLIB_GIT}"
+if [ ! -d "${NEWLIB_DIR}" ] ; then
+	git clone "${NEWLIB_GIT}" "${NEWLIB_DIR}"
 fi
-pushd newlib-mc9s12x >/dev/null
+pushd "${NEWLIB_DIR}" >/dev/null
 git pull
 pushd src >/dev/null
-cp -a "${WORKDIR}"/newlib-mc9s12x/* ./
+cp -a "${WORKDIR}"/"${NEWLIB_DIR}"/* ./
 build_debs
 popd >/dev/null
 popd >/dev/null
