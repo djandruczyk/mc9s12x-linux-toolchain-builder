@@ -1,4 +1,4 @@
-binutils-xgate (1:2.24-2013-12-26-0+2) _DIST_; urgency=low
+binutils-xgate (1:2.24-2013-12-26-0+2) unstable; urgency=low
   [ David Andruczyk ]
   * Cleaned up debian rules to reduce lintian warnings
 
