@@ -20,16 +20,15 @@ BINUTILS_PKGS="binutils-mc9s12x binutils-xgate"
 CPUS=5
 if test `uname -m` = "x86_64" ; then
 	echo "Detected 64 bit machine, building for 32 and 64 bit"
-	#ARCHS="amd64 i386"
-	ARCHS="amd64"
+	ARCHS="amd64 i386"
 else
 	echo "Detected 32 bit machine, building for 32 bit only"
 	ARCHS="i386"
 fi
 
-#DEB_RELEASES="precise quantal raring saucy stable unstable testing"
+DEB_RELEASES="precise quantal raring saucy stable unstable testing"
 #DEB_RELEASES="quantal raring saucy stable unstable testing"
-DEB_RELEASES="precise"
+#DEB_RELEASES="precise"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
 # previously and has the rootimages setup for the distros specified
