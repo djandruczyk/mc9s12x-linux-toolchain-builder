@@ -1,3 +1,11 @@
+binutils-mc9s12x (1:2.24-2013-12-26-0+2) _DIST_; urgency=low
+
+  [ David Andruczyk ]
+  * Cleaned up rules for lintian warnings, added missing symlinks for
+    m68hc11/12 tools
+
+ -- LibreEMS Build Team <builder@libreems.org>  Sat, 28 Dec 2013 21:56:00 -0500
+
 binutils-mc9s12x (1:2.24-2013-12-26-0+1) unstable; urgency=low
   [ David Andruczyk ]
   * packaged latest binutils trunk (2.24) with naming to use mc9s12x as the

@@ -1,4 +1,4 @@
-newlib (1.18.0-6.2+2) unstable; urgency=low
+newlib (1.18.0-6.2+2) _DIST_; urgency=low
 
   [ LibreEMS Build Team ]
   * New binutils code forcing upgrade

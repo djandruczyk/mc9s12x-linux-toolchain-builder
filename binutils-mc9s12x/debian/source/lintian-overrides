@@ -1,0 +1,42 @@
+# Directory usr/m68hc11 is considered as non standard by lintian, however it
+# is a standard dir for cross-compilers
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/ar
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/as
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/ld
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/ld.bfd
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/nm
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/objcopy
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/objdump
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/ranlib
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/bin/strip
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elfb.x
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elfb.xbn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elfb.xn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elfb.xr
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elfb.xu
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elf.x
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elf.xbn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elf.xn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elf.xr
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc11elf.xu
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elfb.x
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elfb.xbn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elfb.xn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elfb.xr
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elfb.xu
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elf.x
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elf.xbn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elf.xn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elf.xr
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/m68hc12elf.xu
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/xgateelf.x
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/xgateelf.xbn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/xgateelf.xn
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/xgateelf.xr
+binutils-mc9s12x: file-in-unusual-dir usr/m68hc11/lib/ldscripts/xgateelf.xu
+binutils-mc9s12x: non-standard-dir-in-usr usr/m68hc11/
+binutils-mc9s12x: binary-without-manpage usr/bin/mc9s12x-ld.bfd
+binutils-mc9s12x: manpage-has-errors-from-man usr/share/man/man1/mc9s12x-as.1.gz 299: warning [p 3, 6.5i]: can't break line
+binutils-mc9s12x: manpage-has-errors-from-man usr/share/man/man1/mc9s12x-objdump.1.gz 161: warning [p 1, 5.5i]: can't break line
+binutils-mc9s12x: manpage-has-errors-from-man usr/share/man/man1/mc9s12x-readelf.1.gz 157: warning [p 1, 4.8i]: can't break line
+

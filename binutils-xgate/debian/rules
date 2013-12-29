@@ -76,7 +76,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Add here commands to install the package into debian/binutils-m68hc1x
+	# Add here commands to install the package into debian/binutils-mc9s12x
 	cd build && \
 		$(MAKE) install prefix=$(DEST)/usr \
 		                mandir=$(DEST)/usr/share/man \
@@ -87,10 +87,13 @@ install: build
 		rm -f $(CURDIR)/debian/binutils-xgate/usr/xgate/bin/$$i ; \
 		ln -s ../../bin/xgate-$$i $(DEST)/usr/xgate/bin/$$i ; \
 	done
+	rm -f $(CURDIR)/debian/binutils-xgate/usr/xgate/bin/ld.bfd 
+	ln -s ../../bin/xgate-ld $(DEST)/usr/xgate/bin/ld.bfd 
 
 	# Create legacy symlinks
-	for i in ar as c++filt elfedit gprof ld ld.bfd nm objcopy objdump ranlib readelf size strings strip ; do \
+	for i in ar as c++filt elfedit gprof ld nm objcopy objdump ranlib readelf size strings strip ; do \
 		ln -s xgate-$$i $(DEST)/usr/bin/mc9xgate-$$i ; \
+		ln -s xgate-$$i.1 $(DEST)/usr/share/man/man1/mc9xgate-$$i.1 ; \
 	done
 			
 	# Files also in main binutils pkg
@@ -100,7 +103,7 @@ install: build
 	rm -rf $(DEST)/usr/share/locale
 
 	# Override file
-	install -p -o root -g root -m 644 $(CURDIR)/debian/overrides \
+	install -p -o root -g root -m 644 $(CURDIR)/debian/source/lintian-overrides \
 		$(DEST)/usr/share/lintian/overrides/binutils-xgate
 
 # Build architecture-independent files here.

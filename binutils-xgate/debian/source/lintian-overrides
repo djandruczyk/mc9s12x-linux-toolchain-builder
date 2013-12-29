@@ -3,6 +3,7 @@
 binutils-xgate: file-in-unusual-dir usr/xgate/bin/ar
 binutils-xgate: file-in-unusual-dir usr/xgate/bin/as
 binutils-xgate: file-in-unusual-dir usr/xgate/bin/ld
+binutils-xgate: file-in-unusual-dir usr/xgate/bin/ld.bfd
 binutils-xgate: file-in-unusual-dir usr/xgate/bin/nm
 binutils-xgate: file-in-unusual-dir usr/xgate/bin/objcopy
 binutils-xgate: file-in-unusual-dir usr/xgate/bin/objdump
@@ -18,6 +19,16 @@ binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xbn
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xn
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xr
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/xgateelf.xu
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elfb.x
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elfb.xbn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elfb.xn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elfb.xr
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elfb.xu
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elf.x
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elf.xbn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elf.xn
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elf.xr
+binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc11elf.xu
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.x
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.xbn
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elfb.xn
@@ -28,4 +39,8 @@ binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xbn
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xn
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xr
 binutils-xgate: file-in-unusual-dir usr/xgate/lib/ldscripts/m68hc12elf.xu
+binutils-xgate: manpage-has-errors-from-man usr/share/man/man1/xgate-as.1.gz 299: warning [p 3, 6.5i]: can't break line
+binutils-xgate: manpage-has-errors-from-man usr/share/man/man1/xgate-objdump.1.gz 161: warning [p 1, 5.5i]: can't break line
+binutils-xgate: manpage-has-errors-from-man usr/share/man/man1/xgate-readelf.1.gz 157: warning [p 1, 4.8i]: can't break line
 binutils-xgate: non-standard-dir-in-usr usr/xgate/
+binutils-xgate: binary-without-manpage usr/bin/xgate-ld.bfd

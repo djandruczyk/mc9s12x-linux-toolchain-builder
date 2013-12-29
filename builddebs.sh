@@ -16,17 +16,19 @@ OUTDIR="${WORKDIR}"/Output
 OTHERMIRROR=/var/cache/pbuilder/repo
 BUILDDIR="${WORKDIR}"/build
 NEWLIBDIR=newlib-1.18.0
-BINUTILS_PKGS="s12x-binutils s12x-xgate"
+BINUTILS_PKGS="binutils-mc9s12x binutils-xgate"
 CPUS=5
 if test `uname -m` = "x86_64" ; then
 	echo "Detected 64 bit machine, building for 32 and 64 bit"
-	ARCHS="i386 amd64"
+	#ARCHS="amd64 i386"
+	ARCHS="amd64"
 else
 	echo "Detected 32 bit machine, building for 32 bit only"
 	ARCHS="i386"
 fi
 
-#DEB_RELEASES="lucid natty oneiric precise quantal stable unstable testing"
+#DEB_RELEASES="precise quantal raring saucy stable unstable testing"
+#DEB_RELEASES="quantal raring saucy stable unstable testing"
 DEB_RELEASES="precise"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
@@ -44,7 +46,11 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		find ${OTHERMIRROR}  -type f -exec rm -f {} \;
 		find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
 		#pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" --debbuildopts -j4 -- --allow-untrusted
+		# Set the distro in the changelog properly...
+		perl -pi -e "s/\ [a-zA-Z_]+;/\ precise;/g if 1 .. 1" debian/changelog
 		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+		# Set the distro in the changelog back to "unstable"
+		perl -pi -e "s/\ [a-zA-Z_]+;/\ unstable;/g if 1 .. 1" debian/changelog
 		if [ $? -ne 0 ] ; then
 			echo "Build failure for Arch $arch Dist $dist"
 			exit -1
@@ -62,7 +68,15 @@ mkdir -p "${BUILDDIR}"
 # one for S12x, and one for Xgate
 function build_binutils {
 if [ ! -f ${TMPDIR}/${BINUTILS_TAR} ] ; then
-	wget ${BINUTILS_URI}/${BINUTILS_TAR} -O ${TMPDIR}/${BINUTILS_TAR}
+	wget -c  ${BINUTILS_URI}/${BINUTILS_TAR} -O ${TMPDIR}/${BINUTILS_TAR}
+else
+	pushd "${TMPDIR}" >/dev/null
+	md5sum --status -c "${BINUTILS_TAR}".md5
+	RESULT=$?
+	if [ ${RESULT} -ne 0 ] ; then
+	    wget -c "${BINUTILS_URI}"/"${BINUTILS_TAR}" -O "${BINUTILS_TAR}"
+	fi
+	popd >/dev/null
 fi
 
 for pkg in `echo "${BINUTILS_PKGS}"` ; do
@@ -80,22 +94,22 @@ return $?
 function build_gcc {
 mkdir -p "${BUILDDIR}"
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d s12x-gcc ] ; then
+if [ ! -d gcc-mc9s12x ] ; then
 	git clone  -b "${GCC_BRANCH}" "${GCC_GIT}"
 fi
-pushd s12x-gcc >/dev/null
+pushd gcc-mc9s12x >/dev/null
 git pull
-pushd "${WORKDIR}"/gcc/ >/dev/null
+pushd "${WORKDIR}"/gcc-mc9s12x/ >/dev/null
 VER=`dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/'`
 popd >/dev/null
 if [ -d src ] ; then
 	pushd src >/dev/null
-	cp -a "${WORKDIR}"/gcc/* ./
+	cp -a "${WORKDIR}"/gcc-mc9s12x/* ./
 	popd >/dev/null
 	mv src gcc-mc9s12x_${VER}
 else
 	pushd gcc-mc9s12x_${VER} >/dev/null
-	cp -a "${WORKDIR}"/gcc/* ./
+	cp -a "${WORKDIR}"/gcc-mc9s12x/* ./
 	popd >/dev/null
 fi
 pushd gcc-mc9s12x_${VER}
@@ -110,13 +124,13 @@ return $?
 function build_newlib {
 mkdir -p "${BUILDDIR}"
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d s12x-newlib ] ; then
+if [ ! -d newlib-mc9s12x ] ; then
 	git clone "${NEWLIB_GIT}"
 fi
-pushd s12x-newlib >/dev/null
+pushd newlib-mc9s12x >/dev/null
 git pull
 pushd src >/dev/null
-cp -a "${WORKDIR}"/newlib/* ./
+cp -a "${WORKDIR}"/newlib-mc9s12x/* ./
 build_debs
 popd >/dev/null
 popd >/dev/null

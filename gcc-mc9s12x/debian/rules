@@ -86,6 +86,11 @@ install: build
 	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/share/man/man7
 	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/include
 	rm -rf $(CURDIR)/debian/gcc-mc9s12x/usr/m68hc11/
+
+	# Overrides
+	install -D -p -o root -g root -m 644 $(CURDIR)/debian/source/lintian-overrides \
+		$(CURDIR)/debian/gcc-mc9s12x/usr/share/lintian/overrides/gcc-mc9s12x
+
 	
 clean:
 	dh_testdir
