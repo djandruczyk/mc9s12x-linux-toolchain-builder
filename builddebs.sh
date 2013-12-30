@@ -37,16 +37,42 @@ function build_debs {
 for dist in `echo "${DEB_RELEASES}"` ; do
 	for arch in `echo ${ARCHS}` ; do
 		echo "Building for Distro $dist Arch $arch"
-		DESTDIR="${OUTDIR}"/"${dist}"
+		DESTDIR="${OUTDIR}"/"${dist}"/"${arch}"
 		if [ ! -d "${DESTDIR}" ] ; then
 			mkdir -p "${DESTDIR}"
 		fi
 		find ${OTHERMIRROR}  -type f -exec rm -f {} \;
 		find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
-		#pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" --debbuildopts -j4 -- --allow-untrusted
+		case "${dist}" in
+			stable|unstable|testing)
+				OSTYPE="~Debian"
+				case "${dist}" in
+					unstable)
+						OSRELEASE="~sid"
+					;;
+					stable)
+						OSRELEASE="~wheezy"
+					;;
+					testing)
+						OSRELEASE="~jessie"
+					;;
+				esac
+			;;
+			precise|quantal|raring|saucy)
+				OSTYPE="~Ubuntu"
+				OSRELEASE="~${dist}"
+			;;
+			*)
+				echo "ERROR, ${dist} not handled!!!"
+				exit -1
+			;;
+		esac
+		
 		# Set the distro in the changelog properly...
+		perl -pi -e "s/\)/${OSTYPE}${OSRELEASE}\)/g if 1 .. 1" debian/changelog
 		perl -pi -e "s/\ [a-zA-Z_]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+		perl -pi -e "s/${OSTYPE}${OSRELEASE}\)/)/g if 1 .. 1" debian/changelog
 		# Set the distro in the changelog back to "unstable"
 		perl -pi -e "s/\ [a-zA-Z_]+;/\ unstable;/g if 1 .. 1" debian/changelog
 		if [ $? -ne 0 ] ; then
