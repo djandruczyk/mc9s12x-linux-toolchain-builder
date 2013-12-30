@@ -3,7 +3,7 @@ Version: 0.5.1
 Section: devel
 Priority: optional
 Architecture: all
-Depends: gcc-mc9s12x (>=1:3.3.6+3.1+dfsg-3+16), binutils-mc9s12x (>=1:2.24-2013-12-16-0+2), binutils-xgate (>=1:2.24-2013-12-26-0+1), newlib-mc9s12x (>=1.18.0-6.2+2), make, bc
+Depends: gcc-mc9s12x (>=1:3.3.6+3.1+dfsg-3+16), binutils-mc9s12x (>=1:2.24-2013-12-16-0+3), binutils-xgate (>=1:2.24-2013-12-26-0+2), newlib-mc9s12x (>=1.18.0-6.2+2), make, bc
 Suggests:
 Replaces:
 Conflicts: binutils-m68hc1x, binutils-mc9xgate, binutils-m68hc11, binutils-m68hc12, binutils-m68hcs12x, binutils-m68hc1x, gcc-m68hc1x, newlib-m68hc1x

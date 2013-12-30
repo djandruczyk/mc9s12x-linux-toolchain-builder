@@ -80,7 +80,7 @@ install: build
 	for i in ar as ld nm objcopy objdump ranlib strip ; do \
 		rm -f $(CURDIR)/debian/binutils-mc9s12x/usr/m68hc11/bin/$$i ; \
 		ln -s ../../bin/mc9s12x-$$i $(DEST)/usr/m68hc11/bin/$$i ; \
-		ln -s m68hc11-$$i.1 $(DEST)/usr/share/man/man1/mc9xgate-$$i.1 ; \
+		ln -s mc9s12x-$$i.1 $(DEST)/usr/share/man/man1/m68hc11-$$i.1 ; \
 	done 
 	rm -f $(CURDIR)/debian/binutils-mc9s12x/usr/m68hc11/bin/ld.bfd 
 	ln -s ../../bin/mc9s12x-ld $(DEST)/usr/m68hc11/bin/ld.bfd 

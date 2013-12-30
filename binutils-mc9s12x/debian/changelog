@@ -1,3 +1,10 @@
+binutils-mc9s12x (1:2.24-2013-12-26-0+3) unstable; urgency=low
+
+  [ David Andruczyk ]
+  * Fixed bad symlinks to man pages
+
+ -- LibreEMS Build Team <builder@libreems.org>  Mon, 30 Dec 2013 13:56:00 -0500
+
 binutils-mc9s12x (1:2.24-2013-12-26-0+2) unstable; urgency=low
 
   [ David Andruczyk ]
