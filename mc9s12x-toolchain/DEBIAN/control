@@ -9,4 +9,4 @@ Replaces:
 Conflicts: binutils-m68hc1x, binutils-mc9xgate, binutils-m68hc11, binutils-m68hc12, binutils-m68hcs12x, binutils-m68hc1x, gcc-m68hc1x, newlib-m68hc1x
 Maintainer: LibreEMS Build Team <builder@libreems.org>
 Description: This will install the Freescale S12X/M68hc11/M68hc12 dev 
-tool chain. These tools are required to build FreeEMS firmware.
+ tool chain. These tools are required to build FreeEMS firmware.
