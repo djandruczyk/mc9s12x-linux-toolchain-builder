@@ -6,11 +6,11 @@
 
 WORKDIR=`pwd`
 TMPDIR="${WORKDIR}/tmp"
-BINUTILS_GIT="git@git.libreems.org:libreems-suite/s12x-binutils.git"
-GCC_GIT="git@git.libreems.org:libreems-suite/s12x-gcc.git"
+BINUTILS_GIT="http://git.libreems.org/libreems-suite/s12x-binutils.git"
+GCC_GIT="http://git.libreems.org/libreems-suite/s12x-gcc.git"
 GCC_BRANCH="tmp-for-dave"
 GCC_DIR="gcc-mc9s12x"
-NEWLIB_GIT="git@git.libreems.org:libreems-suite/s12x-newlib.git"
+NEWLIB_GIT="http://git.libreems.org/libreems-suite/s12x-newlib.git"
 NEWLIB_DIR="newlib-mc9s12x"
 BINUTILS_URI="http://ftp.gnu.org/gnu/binutils/"
 BINUTILS_TAR=binutils-2.24.tar.bz2
