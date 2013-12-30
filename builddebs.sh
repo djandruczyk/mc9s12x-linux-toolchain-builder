@@ -28,8 +28,7 @@ else
 	ARCHS="i386"
 fi
 
-#DEB_RELEASES="precise quantal raring saucy stable unstable testing"
-DEB_RELEASES="precise"
+DEB_RELEASES="precise quantal raring saucy stable unstable testing"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
 # previously and has the rootimages setup for the distros specified
@@ -166,7 +165,7 @@ return $?
 function build_metapkg {
 for dist in `echo "${DEB_RELEASES}"` ; do
 	VER=$(cat mc9s12x-toolchain/DEBIAN/control |grep Version |cut -f2 -d\ )
-	dpkg-deb --build mc9s12x-toolchain && mv mc9s12x-toolchain.deb Output/${dist}/mc9s12x-toolchain-${VER}.deb
+	dpkg-deb --build mc9s12x-toolchain && mv mc9s12x-toolchain.deb Output/${dist}/mc9s12x-toolchain-${VER}~${dist}.deb
 done
 }
 
