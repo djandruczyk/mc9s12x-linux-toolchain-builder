@@ -1,0 +1,252 @@
+Description: Integration of simple test example
+ Added binutils example to demonstrate how to compile for the target
+ .
+ binutils-xgate (1:2.24-0+2) unstable; urgency=low
+ .
+   [ David Andruczyk ]
+   * Cleaned up debian rules to reduce lintian warnings
+Author: LibreEMS Build Team <builder@libreems.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ binutils-xgate-2.24/example/Makefile
+@@ -0,0 +1,73 @@
++#!/usr/bin/make -f
++
++########################################
++# Makefile for 68HC11 projects         #
++# GNU copyright 2002 by Aurelien Jarno #
++########################################
++
++#
++# Project files
++#
++PROG = test
++SRCS = main.s
++OBJS = $(SRCS:.s=.o)
++
++# Assembler flags used by default to compile a program
++ASFLAGS = --gstabs
++
++LDFLAGS = -m m68hc11elfb --defsym _start=0
++
++#
++# Options to creates the .s19 or .b files from the elf
++#
++OBJCOPY_FLAGS = --remove-section=page0 \
++                --remove-section=.page0
++
++
++####################################
++# This part should not be modified #
++####################################
++#
++# Programs location
++#
++DEVC_PREFIX=m68hc11-
++AS=$(DEVC_PREFIX)as
++SIZE=$(DEVC_PREFIX)size
++OBJCOPY=$(DEVC_PREFIX)objcopy
++OBJDUMP=$(DEVC_PREFIX)objdump
++LD=$(DEVC_PREFIX)ld
++
++#
++# Main rules
++#
++all:	$(PROG).elf $(PROG).s19 $(PROG).b
++
++$(PROG).elf: $(OBJS) memory.x
++	$(LD) $(LDFLAGS) -o $(PROG).elf $(OBJS)
++
++clean:
++	rm -f *.o *.elf *.s19 *.b
++
++#
++# Some useful rules
++#
++dump:   $(PROG).elf
++	$(OBJDUMP) -d $(PROG).elf
++
++size:   $(PROG).s19
++	$(SIZE) $(PROG).s19
++
++#
++# Implicit rules
++#
++# .elf is for the simulator and gdb
++# .s19 is for some downloader and the simulator
++# .b   is a binary dump
++#
++.SUFFIXES: .elf .s19 .b
++
++.elf.s19:
++	$(OBJCOPY) --output-target=srec $(OBJCOPY_FLAGS) $< $*.s19
++
++.elf.b:
++	$(OBJCOPY) --output-target=binary --gap-fill=255 $(OBJCOPY_FLAGS) $< $*.b
+--- /dev/null
++++ binutils-xgate-2.24/example/memory.x
+@@ -0,0 +1,11 @@
++/* Memory definition for a 68HC11 program in EEPROM (1024 bytes) */
++MEMORY
++{
++  page0  (rwx) : ORIGIN = 0x0000, LENGTH = 0x03ff
++  eeprom (rx)  : ORIGIN = 0xfe00, LENGTH = 0x01ff
++  text   (rx)  : ORIGIN = 0xfe00, LENGTH = 0x01ff
++  data         : ORIGIN = 0x0000, LENGTH = 0x03ff
++}
++
++/* Setup the stack on the top of the data internal ram (not used).  */
++PROVIDE (_stack = 0x0400-1);
+--- /dev/null
++++ binutils-xgate-2.24/example/main.s
+@@ -0,0 +1,137 @@
++; ----- main.s -----
++; (C) 2002-2003 Aurelien Jarno <aurel32@debian.org>
++
++; This program is free software; you can redistribute it and/or modify
++; it under the terms of the GNU General Public License as published by
++; the Free Software Foundation; either version 2 of the License, or
++; (at your option) any later version.
++
++; This program is distributed in the hope that it will be useful,
++; but WITHOUT ANY WARRANTY; without even the implied warranty of
++; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++; GNU General Public License for more details.
++
++; You should have received a copy of the GNU General Public License
++; along with this program; if not, write to the Free Software
++; Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++
++
++; ****************************************************************************
++;
++;	REGISTERS
++;
++; ****************************************************************************
++PORTF   	=     	0x1005	; Port F register
++PORTE   	=    	0x100A	; Port E register
++INIT		=	0x103D 	; RAM, nd I/O Mapping Register
++
++
++; ****************************************************************************
++;
++;	VARIABLES
++;
++; ****************************************************************************
++	.sect .data
++
++
++; ****************************************************************************
++;
++;	VECTORS
++;
++; ****************************************************************************
++
++	.sect .vectors
++	.globl vectors
++
++vectors:
++	.word def		; ffc0
++	.word def		; ffc2
++	.word def		; ffc4
++	.word def		; ffc6
++	.word def		; ffc8
++	.word def		; ffca
++	.word def		; ffcc
++	.word def		; ffce
++	.word def		; ffd0
++	.word def		; ffd2
++	.word def		; ffd4
++
++	;; SCI
++	.word def		; ffd6
++
++	;; SPI
++	.word def		; ffd8
++	.word def		; ffda (PAII)
++	.word def		; ffdc (PAOVI)
++	.word def		; ffde (TOI)
++
++	;; Timer Output Compare
++	.word def		; ffe0
++	.word def		; ffe2
++	.word def		; ffe4
++	.word def		; ffe6
++	.word def		; ffe8
++
++	;; Timer Input compare
++	.word def		; ffea
++	.word def		; ffec
++	.word def		; ffee
++
++	;;  Misc
++	.word def		; fff0 (RTII)
++	.word def		; fff2 (IRQ)
++	.word def		; fff4 (XIRQ)
++	.word def		; fff6 (SWI)
++	.word def		; fff8 (ILL)
++	.word def		; fffa (COP Failure)
++	.word def		; fffc (COP Clock monitor)
++	.word _start		; fffe (reset)
++
++
++
++; ****************************************************************************
++;
++;	CODE
++;
++; ****************************************************************************
++
++        .sect .text
++
++; ----------------------------------------------------------------------------
++;	Interrupts
++; ----------------------------------------------------------------------------
++
++;; Default interrupt handler.
++def:
++        rti
++
++
++; ----------------------------------------------------------------------------
++;	Main subroutine
++; ----------------------------------------------------------------------------
++
++_start:
++	ldaa	#0x01		; Map RAM to $0000
++	staa	INIT		; and registers to $1000
++	lds	_stack		; Set stack pointer
++
++
++; Simply copy the state of PE0 to PF0
++loop:	
++	ldaa	PORTE
++	anda	#0x01
++	tsta
++	beq	off
++	bra	on
++
++off:
++	ldaa	#0x00
++	staa	PORTF
++	bra	loop
++
++on:
++	ldaa	#0x01
++	staa	PORTF
++	bra 	loop
++
++	end

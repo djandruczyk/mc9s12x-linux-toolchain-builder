@@ -1,17 +1,17 @@
-binutils-xgate (1:2.24-2013-12-26-0+2) unstable; urgency=low
+binutils-xgate (1:2.24-0+2) unstable; urgency=low
   [ David Andruczyk ]
   * Cleaned up debian rules to reduce lintian warnings
 
  -- LibreEMS Build Team <builder@libreems.org>  Sat, 28 Dec 2013 21:57:00 -0500 
  
-binutils-xgate (1:2.24-2013-12-26-0+1) unstable; urgency=low
+binutils-xgate (1:2.24-0+1) unstable; urgency=low
   [ David Andruczyk ]
   * packaged latest work from gnu binutils trunk, aded symlinks for old
     mc9xgate- prefix
 
  -- LibreEMS Build Team <builder@libreems.org>  Thu, 26 Dec 2013 16:57:00 -0500 
  
-binutils-xgate (1:2.23-2013-01-09-0+0) unstable; urgency=low
+binutils-xgate (1:2.23-0+0) unstable; urgency=low
   [ David Andruczyk ]
   * packaged latest work from seank and gnu binutils trunk
 

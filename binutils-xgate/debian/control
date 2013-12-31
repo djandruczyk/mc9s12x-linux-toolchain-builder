@@ -2,8 +2,8 @@ Source: binutils-xgate
 Section: devel
 Priority: extra
 Maintainer: LibreEMS Build Team <builder@libreems.org>
-Standards-Version: 3.7.3
-Build-Depends: debhelper (>= 5.0.0), autoconf (>= 2.13), bison, flex, gettext, texinfo, bzip2
+Standards-Version: 3.9.3
+Build-Depends: debhelper (>= 9), autoconf (>= 2.13), bison, flex, gettext, texinfo, bzip2
 XS-DM-Upload-Allowed: yes
 
 Package: binutils-xgate
@@ -12,7 +12,7 @@ Architecture: any
 Priority: extra
 Conflicts: binutils-mc9xgate
 Replaces: binutils-mc9xgate
-Depends: binutils-mc9s12x, ${shlibs:Depends}
+Depends: binutils-mc9s12x, ${shlibs:Depends}, ${misc:Depends}
 Description: binary utilities that support FreeScales's mc9s12/xgate targets
  The programs in this package are used to assemble, link and manipulate binary
  and object files for the Freescale MC9S12/XGATE architecture. This package is

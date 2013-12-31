@@ -54,18 +54,17 @@ configure-stamp: unpack-stamp
 
 	touch configure-stamp
 
-build: configure-stamp build-stamp
+build: configure-stamp build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 build-stamp:
 	dh_testdir
 	cd build && $(MAKE) -j` cat /proc/cpuinfo  |grep -c processor` && make check-gas   
-	 
-	tar cfz $(CURDIR)/example.tar.gz example
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f $(CURDIR)/example.tar.gz
 	rm -rf build $(srcdir)
 	rm -f build-stamp configure-stamp patch-stamp unpack-stamp
 	dh_clean
@@ -73,7 +72,7 @@ clean:
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	# Add here commands to install the package into debian/binutils-mc9s12x
@@ -84,10 +83,10 @@ install: build
 
 	# Change hardlinks to symlinks
 	for i in ar as ld nm objcopy objdump ranlib strip ; do \
-		rm -f $(CURDIR)/debian/binutils-xgate/usr/xgate/bin/$$i ; \
+		rm -f $(DEST)/usr/xgate/bin/$$i ; \
 		ln -s ../../bin/xgate-$$i $(DEST)/usr/xgate/bin/$$i ; \
 	done
-	rm -f $(CURDIR)/debian/binutils-xgate/usr/xgate/bin/ld.bfd 
+	rm -f $(DEST)/usr/xgate/bin/ld.bfd 
 	ln -s ../../bin/xgate-ld $(DEST)/usr/xgate/bin/ld.bfd 
 
 	# Create legacy symlinks
