@@ -49,17 +49,17 @@ configure-stamp: unpack-stamp
 			--program-prefix=mc9s12x-
 	touch configure-stamp
 
-build: configure-stamp build-stamp
+build: configure-stamp build-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 build-stamp:
 	dh_testdir
 	cd build && $(MAKE) -j` cat /proc/cpuinfo  |grep -c processor` && make check-gas
-	tar cfz $(CURDIR)/example.tar.gz example
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f $(CURDIR)/example.tar.gz
 	rm -rf build $(srcdir)
 	rm -f build-stamp configure-stamp patch-stamp unpack-stamp
 	dh_clean
@@ -67,7 +67,7 @@ clean:
 install: build 
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	# Add here commands to install the package into debian/binutils-mc9s12x
@@ -76,22 +76,21 @@ install: build
 		                mandir=$(DEST)/usr/share/man \
 				infodir=$(DEST)/usr/share/info
 
-	# Change hardlinks to symlinks
+	# Remove hardlinks, and create as symlinks below...
 	for i in ar as ld nm objcopy objdump ranlib strip ; do \
-		rm -f $(CURDIR)/debian/binutils-mc9s12x/usr/m68hc11/bin/$$i ; \
+		rm -f $(DEST)/usr/m68hc11/bin/$$i ; \
 		ln -s ../../bin/mc9s12x-$$i $(DEST)/usr/m68hc11/bin/$$i ; \
-		ln -s mc9s12x-$$i.1 $(DEST)/usr/share/man/man1/m68hc11-$$i.1 ; \
 	done 
-	rm -f $(CURDIR)/debian/binutils-mc9s12x/usr/m68hc11/bin/ld.bfd 
+	rm -f $(DEST)/usr/m68hc11/bin/ld.bfd 
 	ln -s ../../bin/mc9s12x-ld $(DEST)/usr/m68hc11/bin/ld.bfd 
 
 
 	# Also create m68hc11-*
-	install -o root -g root -m 755 $(CURDIR)/debian/m68hc11-as $(DEST)/usr/bin
-	install -o root -g root -m 755 $(CURDIR)/debian/m68hc11-ld $(DEST)/usr/bin
-	# Also create m68hc12-*
-	install -o root -g root -m 755 $(CURDIR)/debian/m68hc12-as $(DEST)/usr/bin
-	install -o root -g root -m 755 $(CURDIR)/debian/m68hc12-ld $(DEST)/usr/bin
+#	install -o root -g root -m 755 $(CURDIR)/debian/m68hc11-as $(DEST)/usr/bin
+#	install -o root -g root -m 755 $(CURDIR)/debian/m68hc11-ld $(DEST)/usr/bin
+#	# Also create m68hc12-*
+#	install -o root -g root -m 755 $(CURDIR)/debian/m68hc12-as $(DEST)/usr/bin
+#	install -o root -g root -m 755 $(CURDIR)/debian/m68hc12-ld $(DEST)/usr/bin
 
 	# Create symlinks to manpages for compat to m68hc11 and m68hc12
 	for i in ar as addr2line c++filt gasp ld nm objdump objcopy ranlib readelf size strings strip ; do \
