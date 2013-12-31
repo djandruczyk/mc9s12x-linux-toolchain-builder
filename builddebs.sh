@@ -35,6 +35,9 @@ DEB_RELEASES="precise quantal raring saucy stable unstable testing"
 #
 function build_debs {
 for dist in `echo "${DEB_RELEASES}"` ; do
+	# Set the distro in the changelog properly...
+	perl -pi -e "s/\)/${OSTYPE}${OSRELEASE}\)/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/\ [a-zA-Z_]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 	for arch in `echo ${ARCHS}` ; do
 		echo "Building for Distro $dist Arch $arch"
 		DESTDIR="${OUTDIR}"/"${dist}"/"${arch}"
@@ -67,20 +70,16 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 				exit -1
 			;;
 		esac
-		
-		# Set the distro in the changelog properly...
-		perl -pi -e "s/\)/${OSTYPE}${OSRELEASE}\)/g if 1 .. 1" debian/changelog
-		perl -pi -e "s/\ [a-zA-Z_]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
-		perl -pi -e "s/${OSTYPE}${OSRELEASE}\)/)/g if 1 .. 1" debian/changelog
-		# Set the distro in the changelog back to "unstable"
-		perl -pi -e "s/\ [a-zA-Z_]+;/\ unstable;/g if 1 .. 1" debian/changelog
 		if [ $? -ne 0 ] ; then
 			echo "Build failure for Arch $arch Dist $dist"
 			exit -1
 		fi
 		find ${OTHERMIRROR} -type f -exec rm -f {} \;
 	done
+	# Set the distro in the changelog back to "unstable"
+	perl -pi -e "s/${OSTYPE}${OSRELEASE}\)/)/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/\ [a-zA-Z_]+;/\ unstable;/g if 1 .. 1" debian/changelog
 done
 }
 
@@ -104,10 +103,18 @@ else
 fi
 
 for pkg in `echo "${BINUTILS_PKGS}"` ; do
-	mkdir -p "${BUILDDIR}"/"${pkg}"
-	cp -a "${pkg}"/* "${BUILDDIR}"/"${pkg}"
-	cp -a "${TMPDIR}"/"${BINUTILS_TAR}" "${BUILDDIR}"/"${pkg}"
-	pushd "${BUILDDIR}"/"${pkg}" >/dev/null
+	pushd "${pkg}" >/dev/null
+	ver=$(dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.]+)-.*/\1/')
+	popd >/dev/null
+	# Remove stale crap...
+	rm -rf "${BUILDDIR}"/"${pkg}"[_-]"${ver}"*
+	mkdir -p "${BUILDDIR}"/"${pkg}"-"${ver}"
+	cp -a "${TMPDIR}"/"${BINUTILS_TAR}" "${BUILDDIR}"/"${pkg}"-"${ver}"
+	pushd "${BUILDDIR}" >/dev/null
+	tar cvfj "${pkg}"_"${ver}".orig.tar.bz2 "${pkg}"-"${ver}"
+	popd >/dev/null
+	cp -a "${pkg}"/* "${BUILDDIR}"/"${pkg}"-"${ver}"
+	pushd "${BUILDDIR}"/"${pkg}"-"${ver}" >/dev/null
 	build_debs 
 	popd >/dev/null
 done
