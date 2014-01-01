@@ -41,17 +41,19 @@ configure-stamp: unpack-stamp
                          --mandir=/usr/share/man 
 	touch $@
 
-build: build-stamp
-build-stamp: configure-stamp
+build: configure-stamp build-arch build-indep
+build-arch:build-stamp
+build-arch:build-indep
+build-stamp: 
 	dh_testdir
 	cd build && $(MAKE) all-gcc
-	tar cfz $(CURDIR)/example.tar.gz example
+#	tar cfz $(CURDIR)/example.tar.gz example
 	touch $@
 
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	# Add here commands to install the package into debian/gcc-mc9s12x
@@ -95,11 +97,10 @@ install: build
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f $(CURDIR)/example.tar.gz
+#	rm -f $(CURDIR)/example.tar.gz
 	rm -rf build
 	rm -rf src
 	rm -f build-stamp configure-stamp unpack-stamp
-
 	dh_clean
 
 
