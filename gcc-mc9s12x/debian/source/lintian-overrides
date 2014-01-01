@@ -3,3 +3,33 @@ gcc-mc9s12x source: ancient-autotools-helper-file config.sub 2003-01-28
 gcc-mc9s12x source: ancient-autotools-helper-file config.guess 2003-01-30
 gcc-mc9s12x source: ancient-autotools-helper-file boehm-gc/config.sub 2002-01-02
 gcc-mc9s12x source: ancient-autotools-helper-file boehm-gc/config.guess 2002-01-10
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/fshort-double/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/fshort-double/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/fshort-double/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/fshort-double/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/mshort/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/mshort/fshort-double/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/mshort/fshort-double/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m68hc12/mshort/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/fshort-double/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/fshort-double/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/mshort/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/mshort/fshort-double/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/mshort/fshort-double/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/m9s12x/mshort/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/mshort/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/mshort/fshort-double/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/mshort/fshort-double/mlong-calls/crt1.o
+gcc-mc9s12x: binary-from-other-architecture usr/lib/gcc-lib/m68hc11/3.3.6-9s12x-20120502/mshort/mlong-calls/crt1.o
+gcc-mc9s12x: manpage-not-compressed usr/share/man/man1/m68hc11-gccbug.1
+gcc-mc9s12x: manpage-not-compressed usr/share/man/man1/m68hc12-gccbug.1
+gcc-mc9s12x: binary-without-manpage usr/bin/m68hc11-gcc-3.3.6-9s12x-20120502
+gcc-mc9s12x: binary-without-manpage usr/bin/m68hc12-gcc
+gcc-mc9s12x: binary-without-manpage usr/bin/mc9s12x-gcc
+gcc-mc9s12x: binary-without-manpage usr/bin/mc9s12x-gccbug

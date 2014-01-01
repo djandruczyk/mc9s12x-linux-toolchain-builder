@@ -19,7 +19,6 @@ BINUTILS_TAR="binutils-2.24.tar.bz2"
 OUTDIR="${WORKDIR}"/Output
 OTHERMIRROR=/var/cache/pbuilder/repo
 BUILDDIR="${WORKDIR}"/build
-NEWLIBDIR=newlib-1.18.0
 BINUTILS_PKGS="binutils-mc9s12x binutils-xgate"
 CPUS=`cat /proc/cpuinfo |grep -c ^processor:`
 if test `uname -m` = "x86_64" ; then
