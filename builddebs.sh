@@ -29,6 +29,9 @@ else
 	ARCHS="i386"
 fi
 
+if [ ! -z "${SIGNING_KEY}" ] ; then
+	echo "We WILL BE SIGNING packages..."
+fi
 if [ -z "${DEB_RELEASES}" ] ; then
 	DEB_RELEASES="lucid precise quantal raring saucy stable unstable testing"
 fi
@@ -50,8 +53,11 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		fi
 		find ${OTHERMIRROR}  -type f -exec rm -f {} \;
 		find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
-		#pdebuild --debbuildopts -j ${CPUS} --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
-		pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+		if [ ! -z "${SIGNING_KEY}" ] ; then
+			pdebuild --auto-debsign --debsign-k "${SIGNING_KEY}" --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+		else
+			pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+		fi
 		if [ $? -ne 0 ] ; then
 			echo "Build failure for Arch $arch Dist $dist"
 			exit -1
