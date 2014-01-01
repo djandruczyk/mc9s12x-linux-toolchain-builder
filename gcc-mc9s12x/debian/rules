@@ -53,7 +53,7 @@ configure-stamp: unpack-stamp
                          --mandir=/usr/share/man 
 	touch $@
 
-build: configure-stamp built-arch build-indep
+build: configure-stamp build-arch build-indep
 build-arch: build-stamp
 build-indep: build-stamp
 build-stamp: 
