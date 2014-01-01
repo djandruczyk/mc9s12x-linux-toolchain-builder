@@ -9,11 +9,13 @@ TMPDIR="${WORKDIR}/tmp"
 BINUTILS_GIT="http://git.libreems.org/libreems-suite/s12x-binutils.git"
 GCC_GIT="http://git.libreems.org/libreems-suite/s12x-gcc.git"
 GCC_BRANCH="tmp-for-dave"
-GCC_DIR="gcc-mc9s12x"
+GCC_TAR="gcc-3.3.6.tar.bz2"
+GCC_PKG="gcc-mc9s12x"
+GCC_DIR="gcc-3.3.6"
 NEWLIB_GIT="http://git.libreems.org/libreems-suite/s12x-newlib.git"
 NEWLIB_DIR="newlib-mc9s12x"
 BINUTILS_URI="http://ftp.gnu.org/gnu/binutils/"
-BINUTILS_TAR=binutils-2.24.tar.bz2
+BINUTILS_TAR="binutils-2.24.tar.bz2"
 OUTDIR="${WORKDIR}"/Output
 OTHERMIRROR=/var/cache/pbuilder/repo
 BUILDDIR="${WORKDIR}"/build
@@ -98,28 +100,21 @@ return $?
 # Need to make GCC next
 function build_gcc {
 mkdir -p "${BUILDDIR}"
+pushd "${WORKDIR}"/"${GCC_PKG}" >/dev/null
+ver=$(dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/')
+popd >/dev/null
+rm -rf "${BUILDDIR}"/"${GCC_PKG}"[_-]*
 pushd "${BUILDDIR}" >/dev/null
-if [ ! -d "${GCC_DIR}" ] ; then
-	git clone  -b "${GCC_BRANCH}" "${GCC_GIT}" "${GCC_DIR}"
-fi
-pushd "${GCC_DIR}" >/dev/null
-git pull
-pushd "${WORKDIR}"/"${GCC_DIR}" >/dev/null
-VER=`dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/'`
+echo "Copying in pristine GCC source"
+tar xf "${TMPDIR}"/"${GCC_TAR}"
+mv "${GCC_DIR}" "${GCC_PKG}"-"${ver}"
 popd >/dev/null
-if [ -d src ] ; then
-	pushd src >/dev/null
-	cp -a "${WORKDIR}"/"${GCC_DIR}"/* ./
-	popd >/dev/null
-	mv src "${GCC_DIR}"_${VER}
-else
-	pushd "${GCC_DIR}"_${VER} >/dev/null
-	cp -a "${WORKDIR}"/"${GCC_DIR}"/* ./
-	popd >/dev/null
-fi
-pushd "${GCC_DIR}"_${VER}
-build_debs
-popd >/dev/null
+cp -a "${GCC_PKG}"/* "${BUILDDIR}"/"${GCC_PKG}"-"${ver}"
+pushd "${BUILDDIR}" >/dev/null
+echo "Making deb .orig tarball"
+tar cjf "${GCC_PKG}"_"${ver}".orig.tar.bz2 "${GCC_PKG}"-"${ver}"
+pushd "${BUILDDIR}"/"${GCC_PKG}"-"${ver}" >/dev/null
+build_debs 
 popd >/dev/null
 popd >/dev/null
 return $?

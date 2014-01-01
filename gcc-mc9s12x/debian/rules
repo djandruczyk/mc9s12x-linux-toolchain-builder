@@ -13,12 +13,24 @@ export SHELL = /bin/bash
 DEB_BUILD_GNU_TYPE      := $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_HOST_GNU_TYPE       := $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 version := $(shell dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/')
-tarball := gcc-mc9s12x_$(version).tar.gz
+#version := $(shell dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.])-.*/\1/')
+#tarball := gcc-$(version).tar.bz2
+
+srcdir  := $(shell echo $(tarball) | sed -e 's/\.tar\.bz2//')
 
 unpack: unpack-stamp
 unpack-stamp:
+	dh_testdir
 	mkdir build
 	touch $@
+
+patch: patch-stamp
+patch-stamp: unpack-stamp
+	dh_testdir
+	for patch in debian/patches/*.patch; do \
+		patch -p0 < $$patch; \
+	done
+	touch patch-stamp
 
 configure: configure-stamp
 configure-stamp: unpack-stamp
@@ -41,13 +53,12 @@ configure-stamp: unpack-stamp
                          --mandir=/usr/share/man 
 	touch $@
 
-build: configure-stamp build-arch build-indep
-build-arch:build-stamp
-build-arch:build-indep
+build: configure-stamp built-arch build-indep
+build-arch: build-stamp
+build-indep: build-stamp
 build-stamp: 
 	dh_testdir
 	cd build && $(MAKE) all-gcc
-#	tar cfz $(CURDIR)/example.tar.gz example
 	touch $@
 
 install: build
@@ -97,10 +108,10 @@ install: build
 clean:
 	dh_testdir
 	dh_testroot
-#	rm -f $(CURDIR)/example.tar.gz
 	rm -rf build
 	rm -rf src
 	rm -f build-stamp configure-stamp unpack-stamp
+
 	dh_clean
 
 
