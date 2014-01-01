@@ -29,8 +29,11 @@ else
 	ARCHS="i386"
 fi
 
-#DEB_RELEASES="lucid precise quantal raring saucy stable unstable testing"
-DEB_RELEASES="lucid"
+if [ -z "${DEB_RELEASES}" ] ; then
+	DEB_RELEASES="lucid precise quantal raring saucy stable unstable testing"
+fi
+echo "Building for \"${DEB_RELEASES}\""
+#DEB_RELEASES="lucid"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
 # previously and has the rootimages setup for the distros specified
@@ -38,6 +41,7 @@ DEB_RELEASES="lucid"
 function build_debs {
 for dist in `echo "${DEB_RELEASES}"` ; do
 	perl -pi -e "s/\)/~${dist}\)/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/\ [a-z]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 	for arch in `echo ${ARCHS}` ; do
 		echo "Building for Distro $dist Arch $arch"
 		DESTDIR="${OUTDIR}"/"${dist}"/"${arch}"
@@ -54,6 +58,7 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		fi
 		find ${OTHERMIRROR} -type f -exec rm -f {} \;
 	done
+	perl -pi -e "s/\ ${dist};/\ unstable;/g if 1 .. 1" debian/changelog
 	perl -pi -e "s/~${dist}\)/\)/g if 1 .. 1" debian/changelog
 done
 }
@@ -98,6 +103,17 @@ return $?
 
 # Need to make GCC next
 function build_gcc {
+if [ ! -f ${TMPDIR}/${GCC_TAR} ] ; then
+	wget -c  ${GCC_URI}/${GCC_TAR} -O ${TMPDIR}/${GCC_TAR}
+else
+	pushd "${TMPDIR}" >/dev/null
+	md5sum --status -c "${GCC_TAR}".md5
+	RESULT=$?
+	if [ ${RESULT} -ne 0 ] ; then
+	    wget -c "${GCC_URI}"/"${GCC_TAR}" -O "${GCC_TAR}"
+	fi
+	popd >/dev/null
+fi
 mkdir -p "${BUILDDIR}"
 pushd "${WORKDIR}"/"${GCC_PKG}" >/dev/null
 ver=$(dpkg-parsechangelog | grep ^"Version" | sed -r 's/Version: [0-9]{1}:([0-9\.].*dfsg)+.*/\1/')
