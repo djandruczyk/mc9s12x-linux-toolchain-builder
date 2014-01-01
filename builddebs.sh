@@ -16,6 +16,7 @@ NEWLIB_GIT="http://git.libreems.org/libreems-suite/s12x-newlib.git"
 NEWLIB_DIR="newlib-mc9s12x"
 BINUTILS_URI="http://ftp.gnu.org/gnu/binutils/"
 BINUTILS_TAR="binutils-2.24.tar.bz2"
+METAPKG_DIR="mc9s12x-toolchain"
 OUTDIR="${WORKDIR}"/Output
 OTHERMIRROR=/var/cache/pbuilder/repo
 BUILDDIR="${WORKDIR}"/build
@@ -160,10 +161,13 @@ return $?
 }
 
 function build_metapkg {
-for dist in `echo "${DEB_RELEASES}"` ; do
-	VER=$(cat mc9s12x-toolchain/DEBIAN/control |grep Version |cut -f2 -d\ )
-	dpkg-deb --build mc9s12x-toolchain && mv mc9s12x-toolchain.deb Output/${dist}/mc9s12x-toolchain-${VER}~${dist}.deb
-done
+if [ ! -d "${OUTDIR}"/all ] ; then
+	mkdir "${OUTDIR}"/all
+fi
+pushd "${METAPKG_DIR}" >/dev/null
+equivs-build ns-control
+mv *.deb "${OUTDIR}"/all
+popd >/dev/null
 }
 
 function build_clean {
