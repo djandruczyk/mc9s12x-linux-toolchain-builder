@@ -3,7 +3,7 @@ Section: devel
 Priority: extra
 Maintainer: LibreEMS Build Team <builder@libreems.org>
 Standards-Version: 3.9.3
-Build-Depends: debhelper (>= 9), autoconf (>= 2.13), bison, flex, gettext, texinfo, bzip2
+Build-Depends: debhelper (>= 7), autoconf (>= 2.13), bison, flex, gettext, texinfo, bzip2
 XS-DM-Upload-Allowed: yes
 
 Package: binutils-mc9s12x

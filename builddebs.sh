@@ -29,8 +29,8 @@ else
 	ARCHS="i386"
 fi
 
-#DEB_RELEASES="precise quantal raring saucy stable unstable testing"
-DEB_RELEASES="precise"
+#DEB_RELEASES="lucid precise quantal raring saucy stable unstable testing"
+DEB_RELEASES="lucid"
 
 # Builds the deb pkgs.  Assumes pdebuild has been setup and configured
 # previously and has the rootimages setup for the distros specified

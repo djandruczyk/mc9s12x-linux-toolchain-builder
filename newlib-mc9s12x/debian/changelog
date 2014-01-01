@@ -4,7 +4,7 @@ newlib (1.18.0-6.2+3) unstable; urgency=low
   * Fixup linitian overrides, update format and standards version, reset
     maintainers to the original group
 
- -- LibreEMS Build Team <builder@libreems.org>  Thu, 26 Dec 2014 17:05:00 -0500
+ -- LibreEMS Build Team <builder@libreems.org>  Tue, 31 Dec 2013 23:25:00 -0500
 
 newlib (1.18.0-6.2+2) unstable; urgency=low
 
@@ -12,7 +12,7 @@ newlib (1.18.0-6.2+2) unstable; urgency=low
   * New binutils code forcing upgrade
   * adjust maintainers
 
- -- LibreEMS Build Team <builder@libreems.org>  Thu, 26 Dec 2014 17:05:00 -0500
+ -- LibreEMS Build Team <builder@libreems.org>  Thu, 26 Dec 2013 17:05:00 -0500
 
 newlib (1.18.0-6.2+1) unstable; urgency=low
 

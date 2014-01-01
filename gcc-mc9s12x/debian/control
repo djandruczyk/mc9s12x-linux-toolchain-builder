@@ -3,7 +3,7 @@ Section: devel
 Priority: extra
 Maintainer: LibreEMS Build Team <builder@libreems.org>
 Standards-Version: 3.9.3
-Build-Depends: debhelper (>= 9), binutils-mc9s12x (>= 1:2.24), autoconf2.13, libtool, gawk | awk, bison, flex, gettext, texinfo, zlib1g-dev, bzip2
+Build-Depends: debhelper (>= 7), binutils-mc9s12x (>= 1:2.24), autoconf2.13, libtool, gawk | awk, bison, flex, gettext, texinfo, zlib1g-dev, bzip2
 XS-DM-Upload-Allowed: yes
 
 Package: gcc-mc9s12x

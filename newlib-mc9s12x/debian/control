@@ -3,9 +3,9 @@ Section: devel
 Priority: extra
 Maintainer: LibreEMS Build Team <builder@libreems.org>
 Uploaders: LibreEMS Build Team <builder@libreems.org>
-Build-Depends: debhelper (>= 6), quilt (>= 0.40), texinfo, binutils-spu [powerpc ppc64], gcc-spu [powerpc ppc64], lzma, dpkg-dev, linux-libc-dev
+Build-Depends: debhelper (>= 6), quilt (>= 0.40), texinfo, binutils-spu [powerpc ppc64], gcc-spu [powerpc ppc64], lzma, dpkg-dev (>= 1.16.0), linux-libc-dev (>= 2.6.38-8.42)
 Build-Depends-Indep: gcc-mc9s12x, binutils-mc9s12x
-Standards-Version: 3.9.1
+Standards-Version: 3.9.3
 
 Package: libnewlib0
 Section: libs
