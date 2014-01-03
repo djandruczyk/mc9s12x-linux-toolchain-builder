@@ -166,21 +166,16 @@ function build_metapkg {
 if [ -d "${BUILD_DIR}"/"${METAPKG_DIR}" ] ; then
 	rm -rf "${BUILD_DIR}"/"${METAPKG_DIR}"
 fi
-mkdir "${BUILD_DIR}"/"${METAPKG_DIR}"
+cp -a "${WORK_DIR}"/"${METAPKG_DIR}" "${BUILD_DIR}"
 pushd "${BUILD_DIR}"/"${METAPKG_DIR}" >/dev/null
+equivs-build ns-control
 for dist in `echo "${DEB_RELEASES}"` ; do
-	cp -a "${WORK_DIR}"/"${METAPKG_DIR}"/ns-control "${BUILD_DIR}"/"${METAPKG_DIR}"/ns-control
-	sed -i -e "s/DIST/${dist}/g" ns-control
-	equivs-build ./ns-control
-	cp ns-control /tmp/ns-control.${dist}
-	FILE=$(echo *.deb)
 	DESTDIR="${OUT_DIR}"/"${dist}"/all
 	if [ ! -d "${DESTDIR}" ] ; then
 		mkdir -p "${DESTDIR}"
 	fi
-	cp "${FILE}" "${DESTDIR}"/`echo "${FILE}" |sed -e "s/_all\./~${dist}_all\./g"`
+	cp *.deb "${DESTDIR}"/$(echo *.deb |sed -e "s/_all/~${dist}_all/g")
 	echo "Done with metapkg for ${dist}"
-	rm -f "${FILE}"
 done
 popd >/dev/null
 }
