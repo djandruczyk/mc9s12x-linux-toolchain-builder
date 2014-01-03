@@ -1,20 +1,20 @@
 binutils-mc9s12x (1:2.24-0+3) unstable; urgency=low
 
-  [ David Andruczyk ]
+  [ LibreEMS Build Team ]
   * Fixed bad symlinks to man pages
 
  -- LibreEMS Build Team <builder@libreems.org>  Mon, 30 Dec 2013 13:56:00 -0500
 
 binutils-mc9s12x (1:2.24-0+2) unstable; urgency=low
 
-  [ David Andruczyk ]
+  [ LibreEMS Build Team ]
   * Cleaned up rules for lintian warnings, added missing symlinks for
     m68hc11/12 tools
 
  -- LibreEMS Build Team <builder@libreems.org>  Sat, 28 Dec 2013 21:56:00 -0500
 
 binutils-mc9s12x (1:2.24-0+1) unstable; urgency=low
-  [ David Andruczyk ]
+  [ LibreEMS Build Team ]
   * packaged latest binutils trunk (2.24) with naming to use mc9s12x as the
     prefix but also work for m68hc11/12. 
 

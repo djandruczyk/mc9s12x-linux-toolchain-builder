@@ -3,6 +3,7 @@
 #
 #  Makes Debs for recent ubuntu and debian
 #
+#set -x
 
 WORK_DIR=`pwd`
 TMP_DIR="${WORK_DIR}/tmp"
@@ -35,7 +36,7 @@ if [ ! -z "${SIGNING_KEY}" ] ; then
 	echo "We WILL BE SIGNING packages..."
 fi
 if [ -z "${DEB_RELEASES}" ] ; then
-	DEB_RELEASES="lucid precise quantal raring saucy stable unstable testing"
+	DEB_RELEASES="lucid precise quantal raring saucy wheezy jessie sid"
 fi
 echo "Building for \"${DEB_RELEASES}\""
 #DEB_RELEASES="lucid"
@@ -45,8 +46,8 @@ echo "Building for \"${DEB_RELEASES}\""
 #
 function build_debs {
 for dist in `echo "${DEB_RELEASES}"` ; do
-#	perl -pi -e "s/\)/~${dist}\)/g if 1 .. 1" debian/changelog
-#	perl -pi -e "s/\ [a-z]+;/\ ${dist};/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/\)/~${dist}\)/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/\ [a-z]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 	for arch in `echo ${ARCHS}` ; do
 		echo "Building for Distro $dist Arch $arch"
 		DESTDIR="${OUT_DIR}"/"${dist}"/"${arch}"
@@ -66,8 +67,8 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		fi
 		find ${OTHERMIRROR} -type f -exec rm -f {} \;
 	done
-#	perl -pi -e "s/\ ${dist};/\ unstable;/g if 1 .. 1" debian/changelog
-#	perl -pi -e "s/~${dist}\)/\)/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/\ ${dist};/\ unstable;/g if 1 .. 1" debian/changelog
+	perl -pi -e "s/~${dist}\)/\)/g if 1 .. 1" debian/changelog
 done
 }
 
@@ -164,10 +165,24 @@ return $?
 function build_metapkg {
 if [ -d "${BUILD_DIR}"/"${METAPKG_DIR}" ] ; then
 	rm -rf "${BUILD_DIR}"/"${METAPKG_DIR}"
+	mkdir "${BUILD_DIR}"/"${METAPKG_DIR}"
+
 fi
-cp -a "${METAPKG_DIR}" "${BUILD_DIR}"
 pushd ""${BUILD_DIR}"/${METAPKG_DIR}" >/dev/null
-build_debs
+for dist in `echo "${DEB_RELEASES}"` ; do
+	cp -a "${WORK_DIR}"/"${METAPKG_DIR}"/ns-control "${BUILD_DIR}"/"${METAPKG_DIR}"/ns-control
+	sed -i -e "s/DIST/${dist}/g" ns-control
+	equivs-build ./ns-control
+	cp ns-control /tmp/ns-control.${dist}
+	FILE=$(echo *.deb)
+	DESTDIR="${OUT_DIR}"/"${dist}"/all
+	if [ ! -d "${DESTDIR}" ] ; then
+		mkdir -p "${DESTDIR}"
+	fi
+	cp "${FILE}" "${DESTDIR}"/`echo "${FILE}" |sed -e "s/_all\./~${dist}_all\./g"`
+	echo "Done with metapkg for ${dist}"
+	rm -f "${FILE}"
+done
 popd >/dev/null
 }
 
