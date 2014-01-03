@@ -10,7 +10,7 @@ Package: mc9s12x-toolchain
 Version: 1.0.1
 Maintainer: LibreEMS Build Team <builder@libreems.org>
 # Pre-Depends: <comma-separated list of packages>
-Depends: gcc-mc9s12x (>= 1:3.3.6+3.1+dfsg-3+17~DIST), binutils-mc9s12x (>= 1:2.24-0+3~DIST), binutils-xgate (>= 1:2.24-0+2~DIST), newlib-mc9s12x (>= 1.18.0-6.2+2~DIST), make, bc
+Depends: gcc-mc9s12x (>= 1:3.3.6+3.1+dfsg-3+18~DIST), binutils-mc9s12x (>= 1:2.24-0+4~DIST), binutils-xgate (>= 1:2.24-0+3~DIST), newlib-mc9s12x (>= 1.18.0-6.2+4~DIST), make, bc
 Conflicts: binutils-m68hc11, binutils-m68hc12, binutils-m68hc1x, binutils-m68hcs12x, binutils-mc9xgate, freeems-toolchain, gcc-m68hc1x, newlib-m68hc1x
 # Recommends: <comma-separated list of packages>
 # Suggests: <comma-separated list of packages>

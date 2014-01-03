@@ -1,3 +1,9 @@
+binutils-xgate (1:2.24-0+3) unstable; urgency=low
+  [ LibreEMS Build Team ]
+  * refinements to debian build details
+
+ -- LibreEMS Build Team <builder@libreems.org>  Thu, 02 Jan 2014 21:05:00 -0500 
+ 
 binutils-xgate (1:2.24-0+2) unstable; urgency=low
   [ LibreEMS Build Team ]
   * Cleaned up debian rules to reduce lintian warnings

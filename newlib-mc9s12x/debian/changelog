@@ -1,3 +1,10 @@
+newlib (1.18.0-6.2+4) unstable; urgency=low
+
+  [ LibreEMS Build Team ]
+  * cleanups to debian build config
+
+ -- LibreEMS Build Team <builder@libreems.org>  Thu, 02 Jan 2014 21:06:00 -0500
+
 newlib (1.18.0-6.2+3) unstable; urgency=low
 
   [ LibreEMS Build Team ]
