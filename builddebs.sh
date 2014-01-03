@@ -165,10 +165,9 @@ return $?
 function build_metapkg {
 if [ -d "${BUILD_DIR}"/"${METAPKG_DIR}" ] ; then
 	rm -rf "${BUILD_DIR}"/"${METAPKG_DIR}"
-	mkdir "${BUILD_DIR}"/"${METAPKG_DIR}"
-
 fi
-pushd ""${BUILD_DIR}"/${METAPKG_DIR}" >/dev/null
+mkdir "${BUILD_DIR}"/"${METAPKG_DIR}"
+pushd "${BUILD_DIR}"/"${METAPKG_DIR}" >/dev/null
 for dist in `echo "${DEB_RELEASES}"` ; do
 	cp -a "${WORK_DIR}"/"${METAPKG_DIR}"/ns-control "${BUILD_DIR}"/"${METAPKG_DIR}"/ns-control
 	sed -i -e "s/DIST/${dist}/g" ns-control
