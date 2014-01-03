@@ -46,31 +46,28 @@ echo "Building for \"${DEB_RELEASES}\""
 #
 function build_debs {
 for dist in `echo "${DEB_RELEASES}"` ; do
-	for arch in `echo ${ARCHS}` ; do
-		echo "Building for Distro $dist Arch $arch"
-		DESTDIR="${OUT_DIR}"/"${dist}"/"${arch}"
-		if [ ! -d "${DESTDIR}" ] ; then
-			mkdir -p "${DESTDIR}"
-		fi
-		find ${OTHERMIRROR}  -type f -exec rm -f {} \;
-		find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
-		if [ ! -z "${SIGNING_KEY}" ] ; then
-			pdebuild --auto-debsign --debsign-k "${SIGNING_KEY}" --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
-		else
-			pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
-		fi
-		# Get deb prefix, stripping version number
-		PREFIX=$(basename `pwd` | sed -r 's/([a-zA-Z-])+-[0-9].*/\1/')
-		FILENAME=$(cd "${DESTDIR}" ; ls "${PREFIX}"*.deb)
-		NEW_FILENAME=$(echo "${FILENAME}" |sed -e "s/_${arch}\./~${dist}_${arch}\./g")
-		# Rename file with ~dist in the name
-		mv "${DESTDIR}"/"${FILENAME}" "${DESTDIR}"/"${NEW_FILENAME}"
-		if [ $? -ne 0 ] ; then
-			echo "Build failure for Arch $arch Dist $dist"
-			exit -1
-		fi
-		find ${OTHERMIRROR} -type f -exec rm -f {} \;
-	done
+    for arch in `echo ${ARCHS}` ; do
+        echo "Building for Distro $dist Arch $arch"
+        DESTDIR="${OUT_DIR}"/"${dist}"/"${arch}"
+        if [ ! -d "${DESTDIR}" ] ; then
+            mkdir -p "${DESTDIR}"
+        fi
+        find ${OTHERMIRROR}  -type f -exec rm -f {} \;
+        find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
+        cp debian/changelog ..
+        dch --distribution "${dist}" -m -l ~"${dist}" "Released for ${dist}"
+        if [ ! -z "${SIGNING_KEY}" ] ; then
+            pdebuild --auto-debsign --debsign-k "${SIGNING_KEY}" --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+        else
+            pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
+        fi
+        if [ $? -ne 0 ] ; then                                                                              
+            echo "Build failure for Arch $arch Dist $dist"
+            exit -1
+        fi
+        find ${OTHERMIRROR} -type f -exec rm -f {} \;
+        cp ../changelog debian
+    done
 done
 }
 
