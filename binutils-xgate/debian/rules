@@ -57,7 +57,7 @@ configure-stamp: unpack-stamp
 build: configure-stamp build-arch build-indep
 build-arch: build-stamp
 build-indep: build-stamp
-build-stamp:
+build-stamp: configure-stamp
 	dh_testdir
 	cd build && $(MAKE) -j` cat /proc/cpuinfo  |grep -c processor` && make check-gas   
 	touch build-stamp

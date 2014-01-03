@@ -1,3 +1,10 @@
+gcc-mc9s12x (1:3.3.6+3.1+dfsg-3+19) unstable; urgency=low
+
+  [ LibreEMS Build Team ]
+  * Fixed bug in debian/rules
+
+ -- LibreEMS Build Team <builder@libreems.org>  Fri, 03 Jan 2014 15:54:00 -0500
+
 gcc-mc9s12x (1:3.3.6+3.1+dfsg-3+18) unstable; urgency=low
 
   [ LibreEMS Build Team ]

@@ -1,3 +1,10 @@
+binutils-mc9s12x (1:2.24-0+5) unstable; urgency=low
+
+  [ LibreEMS Build Team ]
+  * Fixed bug in debian rules
+
+ -- LibreEMS Build Team <builder@libreems.org>  Fri, 03 Jan 2014 15:54:00 -0500
+
 binutils-mc9s12x (1:2.24-0+4) unstable; urgency=low
 
   [ LibreEMS Build Team ]

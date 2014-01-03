@@ -46,8 +46,6 @@ echo "Building for \"${DEB_RELEASES}\""
 #
 function build_debs {
 for dist in `echo "${DEB_RELEASES}"` ; do
-	perl -pi -e "s/\)/~${dist}\)/g if 1 .. 1" debian/changelog
-	perl -pi -e "s/\ [a-z]+;/\ ${dist};/g if 1 .. 1" debian/changelog
 	for arch in `echo ${ARCHS}` ; do
 		echo "Building for Distro $dist Arch $arch"
 		DESTDIR="${OUT_DIR}"/"${dist}"/"${arch}"
@@ -61,14 +59,18 @@ for dist in `echo "${DEB_RELEASES}"` ; do
 		else
 			pdebuild --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
 		fi
+		# Get deb prefix, stripping version number
+		PREFIX=$(basename `pwd` | sed -r 's/([a-zA-Z-])+-[0-9].*/\1/')
+		FILENAME=$(cd "${DESTDIR}" ; ls "${PREFIX}"*.deb)
+		NEW_FILENAME=$(echo "${FILENAME}" |sed -e "s/_${arch}\./~${dist}_${arch}\./g")
+		# Rename file with ~dist in the name
+		mv "${DESTDIR}"/"${FILENAME}" "${DESTDIR}"/"${NEW_FILENAME}"
 		if [ $? -ne 0 ] ; then
 			echo "Build failure for Arch $arch Dist $dist"
 			exit -1
 		fi
 		find ${OTHERMIRROR} -type f -exec rm -f {} \;
 	done
-	perl -pi -e "s/\ ${dist};/\ unstable;/g if 1 .. 1" debian/changelog
-	perl -pi -e "s/~${dist}\)/\)/g if 1 .. 1" debian/changelog
 done
 }
 
