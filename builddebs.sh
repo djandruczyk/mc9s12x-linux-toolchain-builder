@@ -55,7 +55,7 @@ for dist in `echo "${DEB_RELEASES}"` ; do
         find ${OTHERMIRROR}  -type f -exec rm -f {} \;
         find ${DESTDIR} -type f -name "*$arch.deb" -exec cp -a {} ${OTHERMIRROR} \;
         cp debian/changelog ..
-        dch --distribution "${dist}" -m -l ~"${dist}" "Released for ${dist}"
+        dch --force-distribution --distribution "${dist}" -m -l ~"${dist}" "Released for ${dist}"
         if [ ! -z "${SIGNING_KEY}" ] ; then
             pdebuild --auto-debsign --debsign-k "${SIGNING_KEY}" --architecture $arch --buildresult "${DESTDIR}" --pbuilderroot "sudo DIST=${dist} ARCH=${arch}" -- --allow-untrusted
         else
